@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from collections import OrderedDict
+from importlib import import_module
 
 
 class IsoRegistry(object):
