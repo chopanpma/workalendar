@@ -213,7 +213,7 @@ Kingdom ISO code is ``ZK``.
 
 To register, add the following::
 
-    from workalendar.registry import iso_register
+    from ..registry_tools import iso_register
 
     @iso_register('ZK')
     class Zhraa(WesternCalendar, ChristianMixin):
