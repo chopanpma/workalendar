@@ -1,10 +1,20 @@
-from importlib import import_module
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+
+from collections import OrderedDict
 
 
 class IsoRegistry(object):
+    """
+    Registry for all calendars retrievable
+    by ISO 3166-2 codes associated with countries
+    where they are used as official calendars.
+
+    Two letter codes are favored for any subdivisions.
+    """
 
     def __init__(self, load_on_init=True):
-        self.region_registry = dict()
+        self.region_registry = OrderedDict()
         if load_on_init:
             # Europe Countries
             from workalendar.europe import __all__
@@ -47,26 +57,6 @@ class IsoRegistry(object):
             is_subregion = True
         return code_elements, is_subregion
 
-    def get_subregions(self, iso_code):
-        """
-        Returns subregion calendar classes for given region iso_code.
-
-        >>> registry = IsoRegistry()
-        >>> # assuming calendars registered are: DE, DE-HH, DE-BE
-        >>> registry.get_subregions('DE')
-        {'DE-HH': <class 'workalendar.europe.germany.Hamburg'>,
-        'DE-BE': <class 'workalendar.europe.germany.Berlin'>}
-        :rtype dict
-        :return dict where keys are ISO codes strings
-        and values are calendar classes
-        """
-        items = dict()
-        for key, value in self.region_registry.items():
-            code_elements, is_subregion = self._code_elements(key)
-            if is_subregion and code_elements[0] == iso_code:
-                items[key] = value
-        return items
-
     def get_calendar_class(self, iso_code):
         """
         Retrieves calendar class associated with given ``iso_code``.
@@ -87,6 +77,26 @@ class IsoRegistry(object):
             code = iso_code
         return self.region_registry.get(code)
 
+    def get_subregions(self, iso_code):
+        """
+        Returns subregion calendar classes for given region iso_code.
+
+        >>> registry = IsoRegistry()
+        >>> # assuming calendars registered are: DE, DE-HH, DE-BE
+        >>> registry.get_subregions('DE')
+        {'DE-HH': <class 'workalendar.europe.germany.Hamburg'>,
+        'DE-BE': <class 'workalendar.europe.germany.Berlin'>}
+        :rtype dict
+        :return dict where keys are ISO codes strings
+        and values are calendar classes
+        """
+        items = OrderedDict()
+        for key, value in self.region_registry.items():
+            code_elements, is_subregion = self._code_elements(key)
+            if is_subregion and code_elements[0] == iso_code:
+                items[key] = value
+        return items
+
     def items(self, region_codes, include_subregions=False):
         """
         Returns calendar classes for regions
@@ -98,7 +108,7 @@ class IsoRegistry(object):
         :return dict where keys are ISO codes strings
         and values are calendar classes
         """
-        items = dict()
+        items = OrderedDict()
         for code in region_codes:
             try:
                 items[code] = self.region_registry[code]
