@@ -14,27 +14,28 @@ class IsoRegistry(object):
     Two letter codes are favored for any subdivisions.
     """
 
-    def __init__(self, load_on_init=True):
+    STANDARD_MODULES = (
+        # Europe Countries
+        'europe',
+        # United States of America
+        'usa',
+        # American continent outside of USA
+        'america',
+        # African continent
+        'africa',
+        # Asia
+        'asia',
+        # Oceania
+        'oceania',
+    )
+
+    def __init__(self, load_standard_modules=True):
         self.region_registry = OrderedDict()
-        if load_on_init:
-            # Europe Countries
-            from workalendar.europe import __all__
-            self.load_module_from_items('workalendar.europe', __all__)
-            # # United States of America
-            from workalendar.usa import __all__
-            self.load_module_from_items('workalendar.usa', __all__)
-            # # American continent outside of USA
-            from workalendar.america import __all__
-            self.load_module_from_items('workalendar.america', __all__)
-            # # African continent
-            from workalendar.africa import __all__
-            self.load_module_from_items('workalendar.africa', __all__)
-            # # Asia
-            from workalendar.asia import __all__
-            self.load_module_from_items('workalendar.asia', __all__)
-            # # Oceania
-            from workalendar.oceania import __all__
-            self.load_module_from_items('workalendar.oceania', __all__)
+        if load_standard_modules:
+            for module_name in self.STANDARD_MODULES:
+                module = 'workalendar.{}'.format(module_name)
+                all_classes = getattr(import_module(module), '__all__')
+                self.load_module_from_items(module, all_classes)
 
     def register(self, iso_code, cls):
         self.region_registry[iso_code] = cls
