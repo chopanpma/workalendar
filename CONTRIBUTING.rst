@@ -102,10 +102,10 @@ where needed:
     from .zhraa import Zhraa
     # ...
     __all__ = (
-        Belgium,
-        CzechRepublic,
+        'Belgium',
+        'CzechRepublic',
         # ...
-        Zhraa,
+        'Zhraa',
     )
 
 Now, we're building a test class. Edit the ``workalendar/tests/test_europe.py``

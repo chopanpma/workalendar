@@ -38,6 +38,9 @@ class IsoRegistry(object):
                 self.load_module_from_items(module, all_classes)
 
     def register(self, iso_code, cls):
+        """
+        Store the ``cls`` in the region_registry.
+        """
         self.region_registry[iso_code] = cls
 
     def load_module_from_items(self, module_name, items):
@@ -61,7 +64,7 @@ class IsoRegistry(object):
 
     def get_calendar_class(self, iso_code):
         """
-        Retrieves calendar class associated with given ``iso_code``.
+        Retrieve calendar class associated with given ``iso_code``.
 
         If calendar of subdivision is not registered
         (for subdivision like ISO codes, e.g. GB-ENG)
